@@ -303,7 +303,8 @@ class HardwareObject(HardwareObjectNode, CommandContainer):
             try:
                 return HardwareObjectNode.__getattr__(self, attr)
             except AttributeError:
-                raise AttributeError, attr
+                pass
+#                raise AttributeError, attr
     
 
     def emit(self, signal, *args):

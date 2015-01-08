@@ -16,6 +16,7 @@ try:
     from PyTango.gevent import DeviceProxy
 except ImportError:
     logging.getLogger('HWR').warning("Tango support is not available.")
+    from PyTango import DeviceProxy
 
 class TangoCommand(CommandObject):
     def __init__(self, name, command, tangoname = None, username = None, **kwargs):
@@ -212,10 +213,10 @@ class TangoChannel(ChannelObject):
         if poller is not None:
             poller.restart(1000)
 
-        try:
-          raise e
-        except:
-          logging.exception("%s: Exception happened while polling %s", self.name(), self.attributeName)
+#        try:
+#          raise e
+#        except:
+#          logging.exception("%s: Exception happened while polling %s", self.name(), self.attributeName)
 
         if emit_update: 
           # emit at the end => can raise exceptions in callbacks
@@ -240,10 +241,12 @@ class TangoChannel(ChannelObject):
     def getValue(self):
         self._device_initialized.wait(timeout=3)
 
-        if self.read_as_str:
-           value = self.device.read_attribute(self.attributeName, PyTango.DeviceAttribute.ExtractAs.String).value
-        else:
-           value = self.device.read_attribute(self.attributeName).value
+        value = None
+        if self.device is not None:
+            if self.read_as_str:
+               value = self.device.read_attribute(self.attributeName, PyTango.DeviceAttribute.ExtractAs.String).value
+            else:
+               value = self.device.read_attribute(self.attributeName).value
             
         return value
 

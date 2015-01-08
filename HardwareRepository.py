@@ -364,8 +364,9 @@ class __HardwareRepositoryClient:
         Return :
           the required Hardware Object
         """
-        if not objectName.startswith("/"):
-            objectName="/"+objectName
+        if not objectName is None:
+            if not objectName.startswith("/"):
+                objectName="/"+objectName
 
         try:
             if objectName:

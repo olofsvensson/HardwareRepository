@@ -184,7 +184,8 @@ class InstanceServer(Procedure):
             
             send_data_to_server(self.instanceClient, data)
 
-    def isLocal(self):    
+    def isLocal(self):
+        return True 
         try:
             display=os.environ["DISPLAY"].split(":")[0]
         except:
